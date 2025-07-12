@@ -39,7 +39,7 @@ if st.session_state.page == "Home":
     st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
 
     # Layout centrato con larghezza ~50% pagina
-    col1, col2, col3 = st.columns([1, 4, 1])
+    col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.image("logo.png", use_container_width=True)
 
