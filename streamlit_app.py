@@ -1,7 +1,18 @@
 import streamlit as st
 import pandas as pd
+from PIL import Image
+import base64
+from io import BytesIO
 
-# === Dati di esempio ===
+# === Funzione base64 ===
+def logo_to_base64(img):
+    buf = BytesIO()
+    img.save(buf, format="PNG")
+    byte_im = buf.getvalue()
+    base64_img = base64.b64encode(byte_im).decode()
+    return base64_img
+
+# === Dati ===
 data = {
     "Name": ["ITz.Shadow.", "Marius89", "iPriMoRL", "Leam..", "Doc_-_", "AwayFridish", "Hagn99", "Antax_TM"],
     "1st": [3, 2, 0, 1, 0, 1, 0, 0],
@@ -17,7 +28,6 @@ data = {
 df = pd.DataFrame(data)
 df.index = df.index + 1
 
-# === Stile righe ===
 def highlight_rows(row):
     if row.name <= 4:
         return ['background-color: rgba(20, 77, 20, 0.7); color: white'] * len(row)
@@ -26,35 +36,39 @@ def highlight_rows(row):
     else:
         return [''] * len(row)
 
-# === Navbar orizzontale con Tabs ===
+# === Tabs ===
 tabs = st.tabs(["🏠 Home", "🏆 Classifica", "📜 Regolamento"])
 
 # === Home ===
 with tabs[0]:
-    st.markdown("<h1 style='text-align: center;'>Random TraCkup</h1>", unsafe_allow_html=True)
-    st.image("logo.png", use_container_width=True)
+    st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
+
+    logo = Image.open("logo.png")
+
+    st.markdown(
+        f"""
+        <div style="display: flex; justify-content: center;">
+            <img src="data:image/png;base64,{logo_to_base64(logo)}" alt="Logo" width="400"/>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
     st.markdown("""
     ## Descrizione
-    Questa è la pagina iniziale del tuo evento.  
-    Puoi inserire una descrizione, un messaggio di benvenuto o altre info generali.
+    Questa è la pagina iniziale del tuo evento.
     """)
 
 # === Classifica ===
 with tabs[1]:
-    st.title("Leaderboard")
+    st.markdown("<h1 style='text-align: center;'>Leaderboard</h1>", unsafe_allow_html=True)
     styled_df = df.style.apply(highlight_rows, axis=1)
-    st.dataframe(styled_df, use_container_width=True)
+    st.dataframe(styled_df)
 
 # === Regolamento ===
 with tabs[2]:
-    st.title("Regolamento Evento")
+    st.markdown("<h1 style='text-align: center;'>Regolamento Evento</h1>", unsafe_allow_html=True)
     st.markdown("""
     ## Regole
     Qui puoi inserire tutte le regole dell'evento.
-
-    - Dettaglio 1
-    - Dettaglio 2
-    - Dettaglio 3
-
-    Buon divertimento a tutti!
     """)
