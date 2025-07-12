@@ -2,43 +2,17 @@ import streamlit as st
 import pandas as pd
 
 # === Init stato ===
-query_params = st.query_params
-page = query_params.get("page", "Home")
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
 
-# === Navbar custom ===
-st.markdown(
-    """
-    <style>
-    .nav {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 30px;
-    }
-    .nav a {
-        margin: 0 20px;
-        text-decoration: none;
-        color: black;
-        font-weight: bold;
-        font-size: 20px;
-    }
-    .nav a:hover {
-        color: #FF4B4B;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# === Sidebar con pagine alternative ===
+pages = ["Home", "Classifica", "Regolamento"]
+other_pages = [p for p in pages if p != st.session_state.page]
 
-st.markdown(
-    f"""
-    <div class="nav">
-        <a href="?page=Home">🏠 Home</a>
-        <a href="?page=Classifica">🏆 Classifica</a>
-        <a href="?page=Regolamento">📜 Regolamento</a>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+if other_pages:
+    page_selected = st.sidebar.radio("Naviga a:", other_pages)
+    if page_selected:
+        st.session_state.page = page_selected
 
 # === Dati ===
 data = {
@@ -64,28 +38,22 @@ def highlight_rows(row):
     else:
         return [''] * len(row)
 
-# === Contenuto dinamico ===
-if page == "Home":
+# === Pagine ===
+if st.session_state.page == "Home":
     st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
     st.image("logo.png", width=400)
-    st.markdown(
-        """
-        ## Descrizione
-        Questa è la homepage del tuo evento!
-        """)
-elif page == "Classifica":
+    st.markdown("""
+    ## Descrizione
+    Questa è la homepage del tuo evento!
+    """)
+elif st.session_state.page == "Classifica":
     st.markdown("<h1 style='text-align: center;'>Leaderboard</h1>", unsafe_allow_html=True)
     styled_df = df.style.apply(highlight_rows, axis=1)
     st.dataframe(styled_df)
-elif page == "Regolamento":
+elif st.session_state.page == "Regolamento":
     st.markdown("<h1 style='text-align: center;'>Regolamento Evento</h1>", unsafe_allow_html=True)
     st.markdown("""
     ## Regole
     Qui puoi inserire tutte le regole dell'evento.
-
-    - Dettaglio 1
-    - Dettaglio 2
-    - Dettaglio 3
-
-    Buon divertimento a tutti!
     """)
+
