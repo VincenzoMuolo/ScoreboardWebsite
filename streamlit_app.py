@@ -1,16 +1,48 @@
 import streamlit as st
 import pandas as pd
-from PIL import Image
-import base64
-from io import BytesIO
 
-# === Funzione base64 ===
-def logo_to_base64(img):
-    buf = BytesIO()
-    img.save(buf, format="PNG")
-    byte_im = buf.getvalue()
-    base64_img = base64.b64encode(byte_im).decode()
-    return base64_img
+# === Init stato ===
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+
+# === Navbar custom ===
+st.markdown(
+    """
+    <style>
+    .nav {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+    .nav a {
+        margin: 0 15px;
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .nav a:hover {
+        color: #FF4B4B;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    f"""
+    <div class="nav">
+        <a href="?page=Home">🏠 Home</a>
+        <a href="?page=Classifica">🏆 Classifica</a>
+        <a href="?page=Regolamento">📜 Regolamento</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# === Routing ===
+query_params = st.experimental_get_query_params()
+page = query_params.get("page", ["Home"])[0]
 
 # === Dati ===
 data = {
@@ -36,39 +68,17 @@ def highlight_rows(row):
     else:
         return [''] * len(row)
 
-# === Tabs ===
-tabs = st.tabs(["🏠 Home", "🏆 Classifica", "📜 Regolamento"])
-
-# === Home ===
-with tabs[0]:
+# === Contenuto dinamico ===
+if page == "Home":
     st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
+    st.image("logo.png", width=400)
+    st.write("Questa è la homepage.")
 
-    logo = Image.open("logo.png")
-
-    st.markdown(
-        f"""
-        <div style="display: flex; justify-content: center;">
-            <img src="data:image/png;base64,{logo_to_base64(logo)}" alt="Logo" width="400"/>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown("""
-    ## Descrizione
-    Questa è la pagina iniziale del tuo evento.
-    """)
-
-# === Classifica ===
-with tabs[1]:
+elif page == "Classifica":
     st.markdown("<h1 style='text-align: center;'>Leaderboard</h1>", unsafe_allow_html=True)
     styled_df = df.style.apply(highlight_rows, axis=1)
     st.dataframe(styled_df)
 
-# === Regolamento ===
-with tabs[2]:
+elif page == "Regolamento":
     st.markdown("<h1 style='text-align: center;'>Regolamento Evento</h1>", unsafe_allow_html=True)
-    st.markdown("""
-    ## Regole
-    Qui puoi inserire tutte le regole dell'evento.
-    """)
+    st.write("Qui puoi inserire le regole.")
