@@ -1,23 +1,31 @@
 import streamlit as st
 import pandas as pd
 
+# === Imposta pagina iniziale ===
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+
+# === Sidebar verticale ===
+pages = ["Home", "Regolamento", "Classifica"]
+page = st.sidebar.radio("Naviga:", pages)
+st.session_state.page = page
+
 # === Dati ===
 data = {
-    "Name": ["ITz.Shadow.", "Marius89", "iPriMoRL", "Leam..", "Doc_-_", "AwayFridish", "Hagn99", "Antax_TM","DIOCANE"],
-    "1st": [3, 2, 0, 1, 0, 1, 0, 0, 9],
-    "2nd": [2, 1, 2, 0, 0, 1, 1, 0, 9],
-    "3rd": [0, 1, 2, 1, 1, 0, 2, 1, 9],
-    "4th": [1, 0, 0, 1, 1, 0, 0, 1, 9],
-    "5th": [0, 0, 1, 2, 1, 0, 1, 0, 9],
-    "6th": [1, 0, 0, 1, 3, 1, 0, 0, 9],
-    "7th": [1, 0, 0, 0, 1, 0, 0, 0, 9],
-    "8th": [0, 0, 0, 0, 1, 0, 0, 0, 9],
-    "Pts": [81, 52, 49, 45, 34, 30, 29, 17, 7900]
+    "Name": ["ITz.Shadow.", "Marius89", "iPriMoRL", "Leam..", "Doc_-_", "AwayFridish", "Hagn99", "Antax_TM"],
+    "1st": [3, 2, 0, 1, 0, 1, 0, 0],
+    "2nd": [2, 1, 2, 0, 0, 1, 1, 0],
+    "3rd": [0, 1, 2, 1, 1, 0, 2, 1],
+    "4th": [1, 0, 0, 1, 1, 0, 0, 1],
+    "5th": [0, 0, 1, 2, 1, 0, 1, 0],
+    "6th": [1, 0, 0, 1, 3, 1, 0, 0],
+    "7th": [1, 0, 0, 0, 1, 0, 0, 0],
+    "8th": [0, 0, 0, 0, 1, 0, 0, 0],
+    "Pts": [81, 52, 49, 45, 34, 30, 29, 17]
 }
 df = pd.DataFrame(data)
 df.index = df.index + 1
 
-# === Evidenzia righe ===
 def highlight_rows(row):
     if row.name <= 4:
         return ['background-color: rgba(20, 77, 20, 0.7); color: white'] * len(row)
@@ -26,48 +34,43 @@ def highlight_rows(row):
     else:
         return [''] * len(row)
 
-# === Tabs ===
-tab_home, tab_regolamento, tab_classifica = st.tabs(["🏠 Home", "📜 Regolamento", "🏆 Classifica"])
-
-# === HOME ===
-with tab_home:
+# === Contenuto ===
+if st.session_state.page == "Home":
     st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
 
-    # Colonne per centrare e controllare larghezza
-    col1, col2, col3 = st.columns([1, 3, 1])
+    # Layout centrato con larghezza ~50% pagina
+    col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
-        st.image("logo.png", width=600)  # ~50% pagina tipicamente
+        st.image("logo.png", use_container_width=True)
 
     st.markdown("""
     ## Descrizione
-    Questa è la homepage del tuo evento.
-    Qui puoi mettere informazioni generali, un messaggio di benvenuto e dettagli.
+    Benvenuto alla homepage del tuo evento.
+    Qui puoi mettere info generali e un messaggio di benvenuto.
     """)
 
-# === REGOLAMENTO ===
-with tab_regolamento:
+elif st.session_state.page == "Regolamento":
     st.markdown("<h1 style='text-align: center;'>Regolamento Evento</h1>", unsafe_allow_html=True)
     st.markdown("""
     ## Regole
-    Qui puoi inserire tutte le regole dell'evento.
+    Qui puoi inserire tutte le regole dell'evento:
 
     - Regola 1
     - Regola 2
     - Regola 3
 
-    Ricorda di aggiornare le regole quando necessario!
+    Aggiorna le regole quando necessario!
     """)
 
-# === CLASSIFICA ===
-with tab_classifica:
+elif st.session_state.page == "Classifica":
     st.markdown("<h1 style='text-align: center;'>Leaderboard</h1>", unsafe_allow_html=True)
 
-    # Contenitore largo per la tabella
-    col1, col2, col3 = st.columns([1, 5, 1])
+    # Layout centrato con larghezza ~80% pagina
+    col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
         styled_df = df.style.apply(highlight_rows, axis=1)
         st.dataframe(
             styled_df,
-            use_container_width=True,  # per Streamlit >=1.30 è accettato per st.dataframe
+            use_container_width=True,
             height=600
         )
