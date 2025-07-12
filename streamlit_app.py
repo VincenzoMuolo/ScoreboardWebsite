@@ -32,7 +32,7 @@ if "page" not in st.session_state:
 # === Home ===
 if st.session_state.page == "🏠 Home":
     st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
-    st.image("logo.png", use_column_width=True)
+    st.image("logo.png",use_container_width=True)
 
     # Crea colonne vuote per centrare
     col1, col2, col3 = st.columns([1, 2, 1])
