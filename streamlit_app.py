@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 
 # === Init stato ===
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
+query_params = st.query_params
+page = query_params.get("page", "Home")
 
 # === Navbar custom ===
 st.markdown(
@@ -15,11 +15,11 @@ st.markdown(
         margin-bottom: 30px;
     }
     .nav a {
-        margin: 0 15px;
+        margin: 0 20px;
         text-decoration: none;
         color: black;
         font-weight: bold;
-        font-size: 18px;
+        font-size: 20px;
     }
     .nav a:hover {
         color: #FF4B4B;
@@ -39,10 +39,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-# === Routing ===
-query_params = st.experimental_get_query_params()
-page = query_params.get("page", ["Home"])[0]
 
 # === Dati ===
 data = {
@@ -72,13 +68,24 @@ def highlight_rows(row):
 if page == "Home":
     st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
     st.image("logo.png", width=400)
-    st.write("Questa è la homepage.")
-
+    st.markdown(
+        """
+        ## Descrizione
+        Questa è la homepage del tuo evento!
+        """)
 elif page == "Classifica":
     st.markdown("<h1 style='text-align: center;'>Leaderboard</h1>", unsafe_allow_html=True)
     styled_df = df.style.apply(highlight_rows, axis=1)
     st.dataframe(styled_df)
-
 elif page == "Regolamento":
     st.markdown("<h1 style='text-align: center;'>Regolamento Evento</h1>", unsafe_allow_html=True)
-    st.write("Qui puoi inserire le regole.")
+    st.markdown("""
+    ## Regole
+    Qui puoi inserire tutte le regole dell'evento.
+
+    - Dettaglio 1
+    - Dettaglio 2
+    - Dettaglio 3
+
+    Buon divertimento a tutti!
+    """)
