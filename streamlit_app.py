@@ -1,10 +1,10 @@
 import streamlit as st
 import pandas as pd
 
-# Sidebar per la "navbar"
+# === Sidebar come navbar ===
 page = st.sidebar.radio(
     "Naviga",
-    ["🏆 Classifica", "ℹ️ Info Evento"]
+    ["🏠 Home", "🏆 Classifica", "📜 Regolamento"]
 )
 
 # === DATI ===
@@ -20,7 +20,6 @@ data = {
     "8th": [0, 0, 0, 0, 1, 0, 0, 0],
     "Pts": [81, 52, 49, 45, 34, 30, 29, 17]
 }
-
 df = pd.DataFrame(data)
 df.index = df.index + 1
 
@@ -33,24 +32,35 @@ def highlight_rows(row):
         return [''] * len(row)
 
 # === PAGINE ===
-if page == "🏆 Classifica":
+if page == "🏠 Home":
+    st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
+
+    st.image("logo.png", use_column_width=True)  # logo grande
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("📜 Vai al Regolamento"):
+            st.session_state['page'] = "📜 Regolamento"
+    
+    with col2:
+        if st.button("🏆 Vai alla Classifica"):
+            st.session_state['page'] = "🏆 Classifica"
+
+elif page == "🏆 Classifica":
     st.title("Leaderboard")
     styled_df = df.style.apply(highlight_rows, axis=1)
     st.dataframe(styled_df, use_container_width=True)
 
-elif page == "ℹ️ Info Evento":
-    st.title("Informazioni Evento")
+elif page == "📜 Regolamento":
+    st.title("Regolamento Evento")
     st.markdown("""
-    ## Descrizione
-    Benvenuto nella pagina informativa dell'evento!  
-    Qui puoi spiegare **regole**, **criteri di punteggio**, **premi**, oppure raccontare come funziona la competizione.
+    ## Regole
+    Qui puoi inserire tutte le regole dell'evento.
     
-    ✨ **Esempio:**  
-    > Questa classifica è aggiornata in tempo reale in base ai risultati dei partecipanti.
-    >  
-    > - Ogni posizione assegna punti diversi.
-    > - Le prime 4 posizioni vengono evidenziate in verde.
-    > - Dalla 5° alla 8° posizione in arancione.
-    
-    📌 Puoi personalizzare questa descrizione come vuoi!
+    - Dettaglio 1
+    - Dettaglio 2
+    - Dettaglio 3
+
+    Buona fortuna a tutti i partecipanti!
     """)
