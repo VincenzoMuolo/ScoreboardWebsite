@@ -33,9 +33,9 @@ def highlight_rows(row):
 
 # === PAGINE ===
 if page == "🏠 Home":
-    st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>Random TraCkup</h1>", unsafe_allow_html=True)
 
-    st.image("logo.png", use_column_width=True)  # logo grande
+    st.image("logo.png", use_container_width=True)  # logo grande
 
     col1, col2 = st.columns(2)
 
