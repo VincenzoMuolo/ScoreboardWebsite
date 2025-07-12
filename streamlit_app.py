@@ -1,12 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-# === Sidebar come navbar ===
-page = st.sidebar.radio(
-    "Naviga",
-    ["🏠 Home", "🏆 Classifica", "📜 Regolamento"]
-)
-
 # === DATI ===
 data = {
     "Name": ["ITz.Shadow.", "Marius89", "iPriMoRL", "Leam..", "Doc_-_", "AwayFridish", "Hagn99", "Antax_TM"],
@@ -31,36 +25,50 @@ def highlight_rows(row):
     else:
         return [''] * len(row)
 
-# === PAGINE ===
-if page == "🏠 Home":
-    st.markdown("<h1 style='text-align: center;'>Random TraCkup</h1>", unsafe_allow_html=True)
+# === Stato iniziale ===
+if "page" not in st.session_state:
+    st.session_state.page = "🏠 Home"
 
-    st.image("logo.png", use_container_width=True)  # logo grande
+# === Home ===
+if st.session_state.page == "🏠 Home":
+    st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
+    st.image("logo.png", use_column_width=True)
 
-    col1, col2 = st.columns(2)
+    # Crea colonne vuote per centrare
+    col1, col2, col3 = st.columns([1, 2, 1])
 
-    with col1:
-        if st.button("📜 Vai al Regolamento"):
-            st.session_state['page'] = "📜 Regolamento"
-    
     with col2:
-        if st.button("🏆 Vai alla Classifica"):
-            st.session_state['page'] = "🏆 Classifica"
+        go_regolamento = st.button("📜 Vai al Regolamento")
+        go_classifica = st.button("🏆 Vai alla Classifica")
 
-elif page == "🏆 Classifica":
-    st.title("Leaderboard")
-    styled_df = df.style.apply(highlight_rows, axis=1)
-    st.dataframe(styled_df, use_container_width=True)
+    if go_regolamento:
+        st.session_state.page = "📜 Regolamento"
+    elif go_classifica:
+        st.session_state.page = "🏆 Classifica"
 
-elif page == "📜 Regolamento":
-    st.title("Regolamento Evento")
-    st.markdown("""
-    ## Regole
-    Qui puoi inserire tutte le regole dell'evento.
-    
-    - Dettaglio 1
-    - Dettaglio 2
-    - Dettaglio 3
+# === Pagine interne ===
+else:
+    # Navbar orizzontale simulata con Tabs
+    tabs = st.tabs(["🏆 Classifica", "📜 Regolamento"])
+    if tabs[0]:
+        if st.session_state.page == "🏆 Classifica":
+            st.title("Leaderboard")
+            styled_df = df.style.apply(highlight_rows, axis=1)
+            st.dataframe(styled_df, use_container_width=True)
 
-    Buona fortuna a tutti i partecipanti!
-    """)
+    if tabs[1]:
+        if st.session_state.page == "📜 Regolamento":
+            st.title("Regolamento Evento")
+            st.markdown("""
+            ## Regole
+            Qui puoi inserire tutte le regole dell'evento.
+
+            - Dettaglio 1
+            - Dettaglio 2
+            - Dettaglio 3
+
+            Buona fortuna a tutti i partecipanti!
+            """)
+
+    # Sincronizza tab con session state
+    selected_tab = tabs[0] if st.session_state.page == "🏆 Classifica" else tabs[1]
