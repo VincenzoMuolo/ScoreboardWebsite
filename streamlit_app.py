@@ -31,8 +31,8 @@ tabs = st.tabs(["🏠 Home", "🏆 Classifica", "📜 Regolamento"])
 
 # === Home ===
 with tabs[0]:
-    st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
-    st.image("logo.png", use_column_width=True)
+    st.markdown("<h1 style='text-align: center;'>Random TraCkup</h1>", unsafe_allow_html=True)
+    st.image("logo.png", use_container_width=True)
     st.markdown("""
     ## Descrizione
     Questa è la pagina iniziale del tuo evento.  
