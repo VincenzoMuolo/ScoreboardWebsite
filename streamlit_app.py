@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-# === DATI ===
+# === Dati di esempio ===
 data = {
     "Name": ["ITz.Shadow.", "Marius89", "iPriMoRL", "Leam..", "Doc_-_", "AwayFridish", "Hagn99", "Antax_TM"],
     "1st": [3, 2, 0, 1, 0, 1, 0, 0],
@@ -17,6 +17,7 @@ data = {
 df = pd.DataFrame(data)
 df.index = df.index + 1
 
+# === Stile righe ===
 def highlight_rows(row):
     if row.name <= 4:
         return ['background-color: rgba(20, 77, 20, 0.7); color: white'] * len(row)
@@ -25,50 +26,35 @@ def highlight_rows(row):
     else:
         return [''] * len(row)
 
-# === Stato iniziale ===
-if "page" not in st.session_state:
-    st.session_state.page = "🏠 Home"
+# === Navbar orizzontale con Tabs ===
+tabs = st.tabs(["🏠 Home", "🏆 Classifica", "📜 Regolamento"])
 
 # === Home ===
-if st.session_state.page == "🏠 Home":
+with tabs[0]:
     st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
-    st.image("logo.png",use_container_width=True)
+    st.image("logo.png", use_column_width=True)
+    st.markdown("""
+    ## Descrizione
+    Questa è la pagina iniziale del tuo evento.  
+    Puoi inserire una descrizione, un messaggio di benvenuto o altre info generali.
+    """)
 
-    # Crea colonne vuote per centrare
-    col1, col2, col3 = st.columns([1, 2, 1])
+# === Classifica ===
+with tabs[1]:
+    st.title("Leaderboard")
+    styled_df = df.style.apply(highlight_rows, axis=1)
+    st.dataframe(styled_df, use_container_width=True)
 
-    with col2:
-        go_regolamento = st.button("📜 Vai al Regolamento")
-        go_classifica = st.button("🏆 Vai alla Classifica")
+# === Regolamento ===
+with tabs[2]:
+    st.title("Regolamento Evento")
+    st.markdown("""
+    ## Regole
+    Qui puoi inserire tutte le regole dell'evento.
 
-    if go_regolamento:
-        st.session_state.page = "📜 Regolamento"
-    elif go_classifica:
-        st.session_state.page = "🏆 Classifica"
+    - Dettaglio 1
+    - Dettaglio 2
+    - Dettaglio 3
 
-# === Pagine interne ===
-else:
-    # Navbar orizzontale simulata con Tabs
-    tabs = st.tabs(["🏆 Classifica", "📜 Regolamento"])
-    if tabs[0]:
-        if st.session_state.page == "🏆 Classifica":
-            st.title("Leaderboard")
-            styled_df = df.style.apply(highlight_rows, axis=1)
-            st.dataframe(styled_df, use_container_width=True)
-
-    if tabs[1]:
-        if st.session_state.page == "📜 Regolamento":
-            st.title("Regolamento Evento")
-            st.markdown("""
-            ## Regole
-            Qui puoi inserire tutte le regole dell'evento.
-
-            - Dettaglio 1
-            - Dettaglio 2
-            - Dettaglio 3
-
-            Buona fortuna a tutti i partecipanti!
-            """)
-
-    # Sincronizza tab con session state
-    selected_tab = tabs[0] if st.session_state.page == "🏆 Classifica" else tabs[1]
+    Buon divertimento a tutti!
+    """)
