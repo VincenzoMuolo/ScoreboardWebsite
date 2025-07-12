@@ -5,14 +5,16 @@ import pandas as pd
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
-# === Sidebar con pagine alternative ===
+# === Sidebar ===
 pages = ["Home", "Classifica", "Regolamento"]
+# Escludi la pagina corrente dalla sidebar
 other_pages = [p for p in pages if p != st.session_state.page]
 
+# Se c'è più di una pagina alternativa, mostra radio
 if other_pages:
-    page_selected = st.sidebar.radio("Naviga a:", other_pages)
-    if page_selected:
-        st.session_state.page = page_selected
+    choice = st.sidebar.radio("Naviga a:", other_pages)
+    if choice:
+        st.session_state.page = choice
 
 # === Dati ===
 data = {
@@ -44,7 +46,7 @@ if st.session_state.page == "Home":
     st.image("logo.png", width=400)
     st.markdown("""
     ## Descrizione
-    Questa è la homepage del tuo evento!
+    Questa è la homepage del tuo evento.
     """)
 elif st.session_state.page == "Classifica":
     st.markdown("<h1 style='text-align: center;'>Leaderboard</h1>", unsafe_allow_html=True)
@@ -56,4 +58,3 @@ elif st.session_state.page == "Regolamento":
     ## Regole
     Qui puoi inserire tutte le regole dell'evento.
     """)
-
