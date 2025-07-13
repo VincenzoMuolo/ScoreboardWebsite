@@ -1,16 +1,23 @@
+from streamlit_option_menu import option_menu
 import streamlit as st
 import pandas as pd
+import base64
 
-# === Imposta pagina iniziale ===
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
+# Carica immagine e codifica in base64
+file_ = open("logo.png", "rb")
+contents = file_.read()
+data_url = base64.b64encode(contents).decode("utf-8")
 
-# === Sidebar verticale ===
-pages = ["Home", "Regolamento", "Classifica"]
-page = st.sidebar.radio("Naviga:", pages)
-st.session_state.page = page
+# === NAVBAR ORIZZONTALE ===
+selected = option_menu(
+    menu_title=None,  # Nessun titolo
+    options=["Home", "Regolamento", "Classifica"],
+    icons=["house", "file-text", "trophy"],
+    orientation="horizontal",
+    default_index=0,
+)
 
-# === Dati ===
+# === Dati Classifica ===
 data = {
     "Name": ["ITz.Shadow.", "Marius89", "iPriMoRL", "Leam..", "Doc_-_", "AwayFridish", "Hagn99", "Antax_TM"],
     "1st": [3, 2, 0, 1, 0, 1, 0, 0],
@@ -34,43 +41,35 @@ def highlight_rows(row):
     else:
         return [''] * len(row)
 
-# === Contenuto ===
-if st.session_state.page == "Home":
-    st.markdown("<h1 style='text-align: center;'>Benvenuto!</h1>", unsafe_allow_html=True)
+# === Contenuto dinamico ===
+if selected == "Home":
 
-    # Layout centrato con larghezza ~50% pagina
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.image("logo.png", use_container_width=True)
+    st.markdown(
+        f"""
+        <div style="text-align: center;">
+            <img src="data:image/png;base64,{data_url}" style="width: 66%;">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.markdown("""
     ## Descrizione
-    Benvenuto alla homepage del tuo evento.
-    Qui puoi mettere info generali e un messaggio di benvenuto.
+    Questa è la homepage del tuo evento.
     """)
 
-elif st.session_state.page == "Regolamento":
-    st.markdown("<h1 style='text-align: center;'>Regolamento Evento</h1>", unsafe_allow_html=True)
+elif selected == "Regolamento":
+    st.markdown("<h1 style='text-align: center;'>Regolamento</h1>", unsafe_allow_html=True)
     st.markdown("""
     ## Regole
-    Qui puoi inserire tutte le regole dell'evento:
-
     - Regola 1
     - Regola 2
     - Regola 3
-
-    Aggiorna le regole quando necessario!
     """)
-
-elif st.session_state.page == "Classifica":
+elif selected == "Classifica":
     st.markdown("<h1 style='text-align: center;'>Leaderboard</h1>", unsafe_allow_html=True)
 
-    # Layout centrato con larghezza ~80% pagina
     col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
         styled_df = df.style.apply(highlight_rows, axis=1)
-        st.dataframe(
-            styled_df,
-            use_container_width=True,
-            height=600
-        )
+        st.dataframe(styled_df, use_container_width=True, height=600)
