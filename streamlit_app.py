@@ -39,6 +39,7 @@ data = {
 }
 df = pd.DataFrame(data)
 df.index = df.index + 1
+df.index.name = 'Posizione'
 
 def highlight_rows(row):
     if row.name <= 4:
@@ -66,7 +67,7 @@ if selected == "Home":
     """)
 
 elif selected == "Regolamento":
-    st.markdown("<h1 style='text-align: center;'>Regolamento</h1>", unsafe_allow_html=True)
+    #st.markdown("<h1 style='text-align: center;'>Regolamento</h1>", unsafe_allow_html=True)
     st.markdown("""
     ## Regole
     - Regola 1
@@ -74,9 +75,9 @@ elif selected == "Regolamento":
     - Regola 3
     """)
 elif selected == "Classifica":
-    st.markdown("<h1 style='text-align: center;'>Leaderboard</h1>", unsafe_allow_html=True)
+    #st.markdown("<h1 style='text-align: center;'>Classifica</h1>", unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
         styled_df = df.style.apply(highlight_rows, axis=1)
-        st.dataframe(styled_df, use_container_width=True, height=600)
+        st.dataframe(styled_df, use_container_width=True)
