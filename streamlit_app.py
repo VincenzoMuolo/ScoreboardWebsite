@@ -5,7 +5,7 @@ import base64
 
 st.set_page_config(
     page_title="Random TraCkup",
-    page_icon="🎮",  # oppure un file: "logo.png"
+    page_icon="🏆",  # oppure un file: "logo.png"
     layout="wide",   # optional: "centered" o "wide"
     initial_sidebar_state="collapsed"  # optional
 )
@@ -54,7 +54,7 @@ if selected == "Home":
     st.markdown(
         f"""
         <div style="text-align: center;">
-            <img src="data:image/png;base64,{data_url}" style="width: 66%;">
+            <img src="data:image/png;base64,{data_url}" style="width: 50%;">
         </div>
         """,
         unsafe_allow_html=True
