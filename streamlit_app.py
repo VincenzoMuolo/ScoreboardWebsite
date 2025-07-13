@@ -3,6 +3,13 @@ import streamlit as st
 import pandas as pd
 import base64
 
+st.set_page_config(
+    page_title="Random TraCkup",
+    page_icon="🎮",  # oppure un file: "logo.png"
+    layout="wide",   # optional: "centered" o "wide"
+    initial_sidebar_state="collapsed"  # optional
+)
+
 # Carica immagine e codifica in base64
 file_ = open("logo.png", "rb")
 contents = file_.read()
