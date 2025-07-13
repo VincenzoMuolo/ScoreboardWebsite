@@ -54,6 +54,13 @@ df.index.name = 'Posizione'
 contents_sheet = spreadsheet.worksheet("Testi dinamici")
 contents_data = contents_sheet.get_all_records()
 contents_dict = {row['Chiave']: row['Valore'] for row in contents_data}
+descrizione = contents_dict.get("descrizione_home", "Inserisci qui i dati dell'evento")
+regolamento = contents_dict.get("regolamento", "Info sul regolamento")
+regola_1 = contents_dict.get("regola_1", "")
+regola_2 = contents_dict.get("regola_2", "")
+regola_3 = contents_dict.get("regola_3", "")
+regola_4 = contents_dict.get("regola_4", "")
+regola_5 = contents_dict.get("regola_5", "")
 
 # === Evidenzia righe ===
 def highlight_rows(row):
@@ -65,13 +72,6 @@ def highlight_rows(row):
         return [''] * len(row)
 
 # === Pagine ===
-descrizione = contents_dict.get("descrizione_home", "Inserisci qui i dati dell'evento")
-regolamento = contents_dict.get("regolamento", "Info sul regolamento")
-regola_1 = contents_dict.get("regola_1", "")
-regola_2 = contents_dict.get("regola_2", "")
-regola_3 = contents_dict.get("regola_3", "")
-regola_4 = contents_dict.get("regola_4", "")
-regola_5 = contents_dict.get("regola_5", "")
 if selected == "Home":
     st.markdown(
         f"""
@@ -97,6 +97,7 @@ elif selected == "Regolamento":
         <div style='text-align: left; max-width: 800px; margin: 0 auto;'>
             <h2>Regole</h2>
             <h4>{regolamento}</h4>
+            <p>{st.write(contents_dict)}</p>
             <ul style='list-style-position: inside; text-align: left; display: inline-block;'>
                 <li>{regola_1}</li>
                 <li>{regola_2}</li>
