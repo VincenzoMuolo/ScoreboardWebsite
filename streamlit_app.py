@@ -98,4 +98,9 @@ elif selected == "Classifica":
     col1, col2, col3 = st.columns([1, 6, 1])
     with col2:
         styled_df = df.style.apply(highlight_rows, axis=1)
-        st.dataframe(styled_df, use_container_width=True)
+        st.dataframe(
+            styled_df,
+            use_container_width=True,
+            height=720  # altezza in pixel
+        )
+
