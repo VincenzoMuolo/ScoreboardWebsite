@@ -83,29 +83,31 @@ def highlight_rows(row):
 
 # === Contenuti pagine ===
 if selected == "Home":
-    st.markdown(
-        f"""
-        <div style="text-align: center;">
-            <img src="data:image/png;base64,{data_url}" style="width: 50%;">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        f"""
-        <div style='text-align: left; max-width: 800px; margin: 0 auto;'>
-            <h2>Descrizione</h2>
-            <p>{descrizione}</p>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    col1, col2, col3 = st.columns([1, 5, 1])
+    with col2:
+        st.markdown(
+            f"""
+            <div style="text-align: center;">
+                <img src="data:image/png;base64,{data_url}"> # style="width: 50%;"
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            f"""
+            <div style='text-align: left; margin: 0 auto;'>
+                <h2>Descrizione</h2>
+                <p>{descrizione}</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 elif selected == "Regolamento":
     regole = [regola_1, regola_2, regola_3, regola_4, regola_5]
     regole_filtrate = [r for r in regole if r.strip() != ""]
     lista_regole_html = "".join(f"<li>{r}</li>" for r in regole_filtrate)
-    col1, col2, col3 = st.columns([1, 6, 1])
+    col1, col2, col3 = st.columns([1, 5, 1])
     with col2:
         st.markdown(
             f"""
@@ -121,7 +123,7 @@ elif selected == "Regolamento":
         )
 
 elif selected == "Classifica":
-    col1, col2, col3 = st.columns([1, 6, 1])
+    col1, col2, col3 = st.columns([1, 5, 1])
     with col2:
         styled_df = df.style.apply(highlight_rows, axis=1)
         st.dataframe(
