@@ -105,19 +105,20 @@ elif selected == "Regolamento":
     regole = [regola_1, regola_2, regola_3, regola_4, regola_5]
     regole_filtrate = [r for r in regole if r.strip() != ""]
     lista_regole_html = "".join(f"<li>{r}</li>" for r in regole_filtrate)
-
-    st.markdown(
-        f"""
-        <div style='text-align: left; max-width: 800px; margin: 0 auto;'>
-            <h2>Regole</h2>
-            <h4>{regolamento}</h4>
-            <ul style='list-style-position: inside; text-align: left; display: inline-block;'>
-                {lista_regole_html}
-            </ul>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    col1, col2, col3 = st.columns([1, 6, 1])
+    with col2:
+        st.markdown(
+            f"""
+            <div style='text-align: left; margin: 0 auto;'>
+                <h2>Regole</h2>
+                <h4>{regolamento}</h4>
+                <ul style='list-style-position: inside; text-align: left; display: inline-block;'>
+                    {lista_regole_html}
+                </ul>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 elif selected == "Classifica":
     col1, col2, col3 = st.columns([1, 6, 1])
