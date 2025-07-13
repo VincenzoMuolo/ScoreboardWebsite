@@ -47,7 +47,7 @@ if selected == "Home":
     st.markdown(
         f"""
         <div style="text-align: center;">
-            <img src="data:image/png;base64,{data_url}" style="width: 66%;">
+            <img src="data:image/png;base64,{data_url}" style="width: 100%;">
         </div>
         """,
         unsafe_allow_html=True
