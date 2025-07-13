@@ -39,7 +39,8 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(
 client = gspread.authorize(creds)
 
 # === Apri Google Sheets ===
-spreadsheet = client.open("ClassificaRandomTraCkup")  # Titolo esatto del Google Sheets
+#spreadsheet = client.open("ClassificaRandomTraCkup")  # Titolo esatto del Google Sheets
+spreadsheet = client.open_by_key("1h_Z98kp9kCUnBVQ61ceIxu-WniULamsREr_J-lso43M")
 worksheet = spreadsheet.worksheet("Classifica")       # Nome del tab
 
 # === Leggi dati ===
