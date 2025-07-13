@@ -83,12 +83,12 @@ def highlight_rows(row):
 
 # === Contenuti pagine ===
 if selected == "Home":
-    col1, col2, col3 = st.columns([1, 5, 1])
+    col1, col2, col3 = st.columns([1, 5, 1]) # style="width: 50%;"
     with col2:
         st.markdown(
             f"""
             <div style="text-align: center;">
-                <img src="data:image/png;base64,{data_url}"> # style="width: 50%;"
+                <img src="data:image/png;base64,{data_url}"> 
             </div>
             """,
             unsafe_allow_html=True
