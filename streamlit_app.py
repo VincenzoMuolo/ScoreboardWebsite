@@ -51,7 +51,7 @@ df.index = range(1, len(df) + 1)
 df.index.name = 'Posizione'
 
 # Leggi i dati dalla seconda tab per prendere i testi da inserire nelle varie pagine
-contents_sheet = spreadsheet.worksheet("Contenuti")
+contents_sheet = spreadsheet.worksheet("Testi dinamici")
 contents_data = contents_sheet.get_all_records()
 contents_dict = {row['Chiave']: row['Valore'] for row in contents_data}
 
