@@ -92,12 +92,12 @@ if selected == "Home":
     )
 
 elif selected == "Regolamento":
+    st.write(contents_dict)
     st.markdown(
         """
         <div style='text-align: left; max-width: 800px; margin: 0 auto;'>
             <h2>Regole</h2>
             <h4>{regolamento}</h4>
-            <p>{st.write(contents_dict)}</p>
             <ul style='list-style-position: inside; text-align: left; display: inline-block;'>
                 <li>{regola_1}</li>
                 <li>{regola_2}</li>
